@@ -12,11 +12,17 @@ public class Users {
 		this.username = "";
 	}
 	
-	public Users(String string, String string2, String string3, String string4) {
+	public Users(String email, String name, String phone, String username) {
 		this.email = email;
 		this.name = name;
 		this.phone = phone;
 		this.username = username;
+	}
+	
+	@Override
+	public String toString(){
+		return "Email: " + email + ", Name : " + name + ", Phone: " + phone +
+				", Username: " + username;
 	}
 
 }
