@@ -32,33 +32,50 @@ public class Main {
 			DatabaseReference usersRef = ref.child("users");
 			
 			// This section is for Save Data, currently working!
-			Users testing2 = new Users("testing2@gmail.com","testing2","+32123456789","testing2");
-			
-			DatabaseReference newUsersRef = usersRef.push();
-			newUsersRef.setValue(testing2);	
-			
-			Thread.sleep(10000);
+//			Users testing2 = new Users("testing2@gmail.com","testing2","+32123456789","testing2");
+//			
+//			DatabaseReference newUsersRef = usersRef.push();
+//			newUsersRef.setValue(testing2);	
+//			
+//			Thread.sleep(10000);
 			
 			
 			
 			// Retrieve Data
 			// Create a listener for any delete event, currently working!
 			
-//			usersRef.addChildEventListener(new ChildEventListener() {
-//				
-//			    public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {}
-//
-//			    
-//			    public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {}
-//
-//			    public void onChildRemoved(DataSnapshot dataSnapshot) {
-//			        Users removedUsers = dataSnapshot.getValue(Users.class);
-//			        System.out.println("Deleted Users: " + removedUsers.toString());
+			usersRef.addChildEventListener(new ChildEventListener() {
+			    public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+			    	Users addedUsers = dataSnapshot.getValue(Users.class);
+			        System.out.println("Added Users: \n" + addedUsers.toString());	
+			    }
+
+			    public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {
+			    	Users changedUsers = dataSnapshot.getValue(Users.class);
+			        System.out.println("Changed Users: \n" + changedUsers.toString());
+			    }
+
+			    public void onChildRemoved(DataSnapshot dataSnapshot) {
+			        Users removedUsers = dataSnapshot.getValue(Users.class);
+			        System.out.println("Deleted Users: \n" + removedUsers.toString());
+			    }
+
+			    public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+			    public void onCancelled(DatabaseError databaseError) {}
+			});
+			
+			Thread.sleep(10000);
+			
+			// Check Value Event Listener
+//			usersRef.addValueEventListener(new ValueEventListener() {
+//			    public void onDataChange(DataSnapshot dataSnapshot) {
+//			        Users users = dataSnapshot.getValue(Users.class);
+//			        System.out.println(users);
 //			    }
-//
-//			    public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {}
-//
-//			    public void onCancelled(DatabaseError databaseError) {}
+//			    public void onCancelled(DatabaseError databaseError) {
+//			        System.out.println("The read failed: " + databaseError.getCode());
+//			    }
 //			});
 //			
 //			Thread.sleep(10000);
