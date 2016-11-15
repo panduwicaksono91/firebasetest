@@ -1,12 +1,15 @@
 
 public class TestData {
-	String testName;
+	public String testName;
+	public Object testTime;
 	
 	public TestData(){
 		this.testName = "";
+		this.testTime = "";
 	}
 	
-	public TestData(String testName){
+	public TestData(String testName, Object testTime){
 		this.testName = testName;
+		this.testTime = testTime;
 	}
 }
