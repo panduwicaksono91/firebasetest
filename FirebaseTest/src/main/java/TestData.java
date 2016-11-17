@@ -12,4 +12,5 @@ public class TestData {
 		this.testName = testName;
 		this.testTime = testTime;
 	}
+	
 }
