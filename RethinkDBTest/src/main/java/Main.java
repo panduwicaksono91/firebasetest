@@ -8,12 +8,10 @@ import com.rethinkdb.net.Cursor;
 public class Main {
 	
 	public static void main(String[] args){
-		RethinkDB r = RethinkDB.r;
-		Connection conn = r.connection().hostname("localhost").port(28015).connect();
 		
-		// Create the table, only run once
-//		r.db("test").tableCreate("testData").run(conn);
-		
+		RethinkDBTest rethinkDBTest = new RethinkDBTest();
+		rethinkDBTest.testInputWithPush(10);
+
 		// how to listen
 //		Cursor changeCursor = r.table("tv_shows").changes().run(conn);
 //		long time = System.currentTimeMillis();
@@ -23,16 +21,6 @@ public class Main {
 //			System.out.println("Time: " + time);
 //			System.out.println(change);
 //		}
-		
-		// how to insert data
-		TestData testData1 = new TestData("testData1", System.currentTimeMillis());
-		
-		r.table("testData").insert(
-				r.hashMap();
-		).run(conn);
-		
-		// close the connection
-		conn.close();
 		
 	}
 	
