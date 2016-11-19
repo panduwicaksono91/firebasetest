@@ -10,7 +10,8 @@ public class Main {
 	public static void main(String[] args){
 		
 		RethinkDBTest rethinkDBTest = new RethinkDBTest();
-		rethinkDBTest.testInputWithPush(10);
+//		rethinkDBTest.testCreateWithPush(10);
+//		rethinkDBTest.testRead(7);
 		
 	}
 	

@@ -17,8 +17,8 @@ public class RethinkDBTest {
 //		r.db("test").tableCreate("testData").run(conn);
 	}
 	
-	public void testInputWithPush(int n){
-		System.out.println("Test RethinkDB Using Push Method");
+	public void testCreateWithPush(int n){
+		System.out.println("Test RethinkDB Create Using Push Method");
 		System.out.println("Total number of data: " + n);
 		
 		ArrayList<TestData> testDataList = TestDataGenerator.generateData(n);
@@ -44,10 +44,10 @@ public class RethinkDBTest {
 		conn.close();
 	}
 	
-	public void testInputWithSet(int n){
+	public void testCreateWithSet(int n){
 		// pass an array into RethinkDB
 		
-		System.out.println("Test RethinkDB Using Set Method");
+		System.out.println("Test RethinkDB Create Using Set Method");
 		System.out.println("Total number of data: " + n);
 		
 		ArrayList<TestData> testDataList = TestDataGenerator.generateData(n);
@@ -77,4 +77,25 @@ public class RethinkDBTest {
 		conn.close();
 	}
 	
+	public void testRead(int key){
+		System.out.println("Test RethinkDB Read Single Element");
+		
+		long startTime = System.currentTimeMillis();
+		System.out.println("Start Time: " + startTime);
+		
+		// read the data from database
+		System.out.println(r.table("testData").get(key).run(conn).toString() + "," + System.currentTimeMillis());
+				
+		long endTime = System.currentTimeMillis();
+		System.out.println("End Time: " + endTime);
+		
+		long elapsedTime = endTime - startTime;
+		
+		System.out.println("Elapsed Time: " + elapsedTime);
+		
+		// close the connection
+		conn.close();
+		
+	}
+
 }
