@@ -38,7 +38,9 @@ public class FirebaseTest {
 		
 	}
 	
+
 	public void testInputWithPush(int n) throws InterruptedException{
+		System.out.println("===============================");
 		System.out.println("Test Firebase Using Push Method");
 		System.out.println("Total number of data: " + n);
 		
@@ -65,11 +67,12 @@ public class FirebaseTest {
 		
 		long elapsedTime = endTime - startTime;
 		
-		System.out.println("Elapsed Time ("+ n + "): " + elapsedTime);
+		System.out.println("Elapsed Time ("+ n + "): " + elapsedTime + " ms");
 		
 	}
 	
 	public void testInputWithSet(int n) throws InterruptedException{
+		System.out.println("===============================");
 		System.out.println("Test Firebase Using Set Method");
 		System.out.println("Total number of data: " + n);
 		
@@ -79,7 +82,7 @@ public class FirebaseTest {
 		
 		long startTime = System.currentTimeMillis();
 		System.out.println("Start Time: " + startTime);
-		testDataRef.push().setValue(testDataList)
+		testDataRef.setValue(testDataList)
 		.addOnCompleteListener(new OnCompleteListener<Void>() {
 		      public void onComplete(Task<Void> task) {
 		        sync.countDown();
@@ -93,7 +96,7 @@ public class FirebaseTest {
 		
 		long elapsedTime = endTime - startTime;
 		
-		System.out.println("Elapsed Time for ("+ n + "): " + elapsedTime);
+		System.out.println("Elapsed Time for ("+ n + "): " + elapsedTime + " ms");
 	
 	}
 	
