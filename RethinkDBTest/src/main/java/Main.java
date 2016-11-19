@@ -11,7 +11,10 @@ public class Main {
 		
 		RethinkDBTest rethinkDBTest = new RethinkDBTest();
 //		rethinkDBTest.testCreateWithPush(10);
-//		rethinkDBTest.testRead(7);
+//		rethinkDBTest.testReadSingleKey(7);
+//		rethinkDBTest.testReadRangedKey(3,7);
+//		rethinkDBTest.testDeleteSingleKey(1);
+//		rethinkDBTest.testDeleteRangedKey(2,4);
 		
 	}
 	

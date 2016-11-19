@@ -5,6 +5,7 @@ import java.util.concurrent.CountDownLatch;
 import com.rethinkdb.RethinkDB;
 import com.rethinkdb.model.MapObject;
 import com.rethinkdb.net.Connection;
+import com.rethinkdb.net.Cursor;
 
 public class RethinkDBTest {
 	
@@ -77,7 +78,7 @@ public class RethinkDBTest {
 		conn.close();
 	}
 	
-	public void testRead(int key){
+	public void testReadSingleKey(int key){
 		System.out.println("Test RethinkDB Read Single Element");
 		
 		long startTime = System.currentTimeMillis();
@@ -97,5 +98,72 @@ public class RethinkDBTest {
 		conn.close();
 		
 	}
+	
+	public void testReadRangedKey(int key1, int key2){
+		System.out.println("Test RethinkDB Read Ranged Element");
+		
+		long startTime = System.currentTimeMillis();
+		System.out.println("Start Time: " + startTime);
+		
+		// read the data from database
+		Cursor cursor = r.table("testData").between(key1, key2).optArg("right_bound", "closed").run(conn);
+		
+		for (Object change : cursor) {
+			System.out.println(System.currentTimeMillis() + "," + change.toString());
+		}
+		
+		long endTime = System.currentTimeMillis();
+		System.out.println("End Time: " + endTime);
+		
+		long elapsedTime = endTime - startTime;
+		
+		System.out.println("Elapsed Time: " + elapsedTime);
+		
+		// close the connection
+		conn.close();
+	}
+	
+	public void testDeleteSingleKey(int key){
+		System.out.println("Test RethinkDB Delete Single Key");
+		
+		long startTime = System.currentTimeMillis();
+		System.out.println("Start Time: " + startTime);
+		
+		// delete the data from database
+		r.table("testData").get(key).delete()
+				.optArg("return_changes", true).run(conn);
+		
+		long endTime = System.currentTimeMillis();
+		System.out.println("End Time: " + endTime);
+		
+		long elapsedTime = endTime - startTime;
+		
+		System.out.println("Elapsed Time: " + elapsedTime);
+		
+		// close the connection
+		conn.close();
+	}
+	
+	public void testDeleteRangedKey(int key1, int key2){
+		System.out.println("Test RethinkDB Delete Ranged Key");
+		
+		long startTime = System.currentTimeMillis();
+		System.out.println("Start Time: " + startTime);
+		
+		// delete the data from database
+		r.table("testData").between(key1, key2).
+			optArg("right_bound", "closed").delete().run(conn);
+				
+		long endTime = System.currentTimeMillis();
+		System.out.println("End Time: " + endTime);
+		
+		long elapsedTime = endTime - startTime;
+		
+		System.out.println("Elapsed Time: " + elapsedTime);
+		
+		// close the connection
+		conn.close();
+	}
+	
 
 }
