@@ -11,16 +11,6 @@ public class Main {
 		
 		RethinkDBTest rethinkDBTest = new RethinkDBTest();
 		rethinkDBTest.testInputWithPush(10);
-
-		// how to listen
-//		Cursor changeCursor = r.table("tv_shows").changes().run(conn);
-//		long time = System.currentTimeMillis();
-//		
-//		for (Object change : changeCursor) {
-//			time = System.currentTimeMillis();
-//			System.out.println("Time: " + time);
-//			System.out.println(change);
-//		}
 		
 	}
 	
