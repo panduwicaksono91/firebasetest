@@ -17,5 +17,4 @@ public class TestData {
 	public String toString(){
 		return testName + "," + testTime;
 	}
-	
 }
