@@ -79,7 +79,8 @@ public class RethinkDBTest {
 	}
 	
 	public void testReadSingleKey(int key){
-		System.out.println("Test RethinkDB Read Single Element");
+		System.out.println("Test RethinkDB Read Single Key");
+		System.out.println("Read data: " + key);
 		
 		long startTime = System.currentTimeMillis();
 		System.out.println("Start Time: " + startTime);
@@ -100,7 +101,8 @@ public class RethinkDBTest {
 	}
 	
 	public void testReadRangedKey(int key1, int key2){
-		System.out.println("Test RethinkDB Read Ranged Element");
+		System.out.println("Test RethinkDB Read Ranged Key");
+		System.out.println("Read data: " + key1 + "-" + key2);
 		
 		long startTime = System.currentTimeMillis();
 		System.out.println("Start Time: " + startTime);
@@ -123,8 +125,67 @@ public class RethinkDBTest {
 		conn.close();
 	}
 	
+	public void testUpdateSingleKey(int key){
+		System.out.println("Test RethinkDB Update Single Key");
+		System.out.println("Update data: " + key);
+		
+		long startTime = System.currentTimeMillis();
+		System.out.println("Start Time: " + startTime);
+		
+		// create new data
+		TestData newTestData = new TestData("testData" + (key+1000),
+				r.now().toEpochTime());
+		
+		// update the data into database
+		r.table("testData").get(key).update(
+				r.hashMap("testName",newTestData.testName)
+					.with("testTime",r.now().toEpochTime()))
+		.run(conn);
+		
+		long endTime = System.currentTimeMillis();
+		System.out.println("End Time: " + endTime);
+		
+		long elapsedTime = endTime - startTime;
+		
+		System.out.println("Elapsed Time: " + elapsedTime);
+		
+		// close the connection
+		conn.close();
+		
+	}
+	
+	public void testUpdateRangedKey(int key1, int key2){
+		System.out.println("Test RethinkDB Update Ranged Key");
+		System.out.println("Update data: " + key1 + "-" + key2);
+		
+		ArrayList<TestData> testDataList = TestDataGenerator.generateUpdateData(key1,key2);
+		
+		long startTime = System.currentTimeMillis();
+		System.out.println("Start Time: " + startTime);
+		
+		// update the data one by one
+		for(int ii = key1,n = 0; ii <= key2; ii++, n++){
+			r.table("testData").get(ii).update(
+					r.hashMap("testName",testDataList.get(n).testName)
+						.with("testTime",r.now().toEpochTime()))
+			.run(conn);
+		}
+		
+		long endTime = System.currentTimeMillis();
+		System.out.println("End Time: " + endTime);
+		
+		long elapsedTime = endTime - startTime;
+		
+		System.out.println("Elapsed Time: " + elapsedTime);
+		
+		// close the connection
+		conn.close();
+		
+	}
+	
 	public void testDeleteSingleKey(int key){
 		System.out.println("Test RethinkDB Delete Single Key");
+		System.out.println("Delete data: " + key);
 		
 		long startTime = System.currentTimeMillis();
 		System.out.println("Start Time: " + startTime);
@@ -146,6 +207,7 @@ public class RethinkDBTest {
 	
 	public void testDeleteRangedKey(int key1, int key2){
 		System.out.println("Test RethinkDB Delete Ranged Key");
+		System.out.println("Delete data: " + key1 + "-" + key2);
 		
 		long startTime = System.currentTimeMillis();
 		System.out.println("Start Time: " + startTime);
@@ -165,5 +227,4 @@ public class RethinkDBTest {
 		conn.close();
 	}
 	
-
 }

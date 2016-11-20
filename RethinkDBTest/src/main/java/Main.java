@@ -15,6 +15,8 @@ public class Main {
 //		rethinkDBTest.testReadRangedKey(3,7);
 //		rethinkDBTest.testDeleteSingleKey(1);
 //		rethinkDBTest.testDeleteRangedKey(2,4);
+//		rethinkDBTest.testUpdateSingleKey(7);
+//		rethinkDBTest.testUpdateRangedKey(0,1);
 		
 	}
 	
