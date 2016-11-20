@@ -23,18 +23,19 @@ public class FirebaseTest {
 	private static DatabaseReference initialReference;
 	private static DatabaseReference testDataRef;
 	
-	public FirebaseTest() throws FileNotFoundException {
+	public FirebaseTest(DatabaseReference testDataRef) throws FileNotFoundException {
+		this.testDataRef = testDataRef;
 		// Initialize the app with a service account, granting admin privileges
-		this.options = new FirebaseOptions.Builder()
-				  .setServiceAccount(new FileInputStream(FIREBASE_CREDENTIALS))
-				  .setDatabaseUrl(DATABASE_URL)
-				  .build();
-		FirebaseApp.initializeApp(options);
-		
-		// Get a reference to our users
-		this.database = FirebaseDatabase.getInstance();
-		this.initialReference = database.getReference();	
-		this.testDataRef = initialReference.child("testData");
+//		this.options = new FirebaseOptions.Builder()
+//				  .setServiceAccount(new FileInputStream(FIREBASE_CREDENTIALS))
+//				  .setDatabaseUrl(DATABASE_URL)
+//				  .build();
+//		FirebaseApp.initializeApp(options);
+//		
+//		// Get a reference to our users
+//		this.database = FirebaseDatabase.getInstance();
+//		this.initialReference = database.getReference();	
+//		this.testDataRef = initialReference.child("testData");
 		
 	}
 	
