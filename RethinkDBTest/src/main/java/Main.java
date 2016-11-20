@@ -10,17 +10,13 @@ public class Main {
 	public static void main(String[] args){
 		
 		RethinkDBTest rethinkDBTest = new RethinkDBTest();
-		rethinkDBTest.testInputWithPush(10);
-
-		// how to listen
-//		Cursor changeCursor = r.table("tv_shows").changes().run(conn);
-//		long time = System.currentTimeMillis();
-//		
-//		for (Object change : changeCursor) {
-//			time = System.currentTimeMillis();
-//			System.out.println("Time: " + time);
-//			System.out.println(change);
-//		}
+//		rethinkDBTest.testCreateWithPush(10);
+//		rethinkDBTest.testReadSingleKey(7);
+//		rethinkDBTest.testReadRangedKey(3,7);
+//		rethinkDBTest.testDeleteSingleKey(1);
+//		rethinkDBTest.testDeleteRangedKey(2,4);
+//		rethinkDBTest.testUpdateSingleKey(7);
+//		rethinkDBTest.testUpdateRangedKey(0,1);
 		
 	}
 	
