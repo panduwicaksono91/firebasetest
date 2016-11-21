@@ -5,6 +5,9 @@ import java.util.concurrent.CountDownLatch;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
@@ -101,4 +104,88 @@ public class FirebaseTest {
 	
 	}
 	
+	public void testReadSingleKey(int key){
+		System.out.println("===============================");
+		System.out.println("Test Firebase Read Single Key");
+		System.out.println("Read data: " + key);
+		
+		long startTime = System.currentTimeMillis();
+		System.out.println("Start Time: " + startTime);
+		
+		Flag.flag = true;
+		
+		testDataRef.orderByKey().equalTo(key).addChildEventListener(
+				new ChildEventListener() {
+					public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+						String testDataKey = dataSnapshot.getKey();
+				    	TestData readTestData = dataSnapshot.getValue(TestData.class);
+				        System.out.println(System.currentTimeMillis() + ",Read TestData," + testDataKey + "," + readTestData.toString());
+				        Flag.flag = false;
+					}
+
+					public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+					public void onChildRemoved(DataSnapshot dataSnapshot) {}
+
+					public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+					public void onCancelled(DatabaseError databaseError) {}
+		});
+		
+		while(Flag.flag){}
+	
+		long endTime = System.currentTimeMillis();
+		System.out.println("End Time: " + endTime);
+		
+		long elapsedTime = endTime - startTime;
+		
+		System.out.println("Elapsed Time for ("+ key + "): " + elapsedTime + " ms");
+	}
+	
+	public void testReadRangedKey(int key1, int key2){
+		System.out.println("===============================");
+		System.out.println("Test Firebase Read Ranged Key");
+		System.out.println("Read data: " + key1 + "-" + key2);
+		
+		long startTime = System.currentTimeMillis();
+		System.out.println("Start Time: " + startTime);
+		
+		Flag.flag = true;
+		
+		testDataRef.orderByKey().startAt(key1).endAt(key2).addChildEventListener(
+				new ChildEventListener() {
+					public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+						String testDataKey = dataSnapshot.getKey();
+				    	TestData readTestData = dataSnapshot.getValue(TestData.class);
+				        System.out.println(System.currentTimeMillis() + ",Read TestData," + testDataKey + "," + readTestData.toString());
+				        Flag.flag = false;
+					}
+
+					public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+					public void onChildRemoved(DataSnapshot dataSnapshot) {}
+
+					public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {}
+
+					public void onCancelled(DatabaseError databaseError) {}
+		});
+		
+		while(Flag.flag){}
+	
+		long endTime = System.currentTimeMillis();
+		System.out.println("End Time: " + endTime);
+		
+		long elapsedTime = endTime - startTime;
+		
+		System.out.println("Elapsed Time for ("+ key1 + "-" + key2 + "): " + elapsedTime + " ms");
+	}
+	
+	public void testUpdateSingleKey(int key) {}
+	
+	public void testUpdateRangedKey(int key1, int key2) {}
+	
+	public void testDeleteSingleKey(int key) {}
+	
+	public void testDeleteRangedKey(int key1, int key2) {}
+
 }
