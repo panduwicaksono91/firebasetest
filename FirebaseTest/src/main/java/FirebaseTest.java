@@ -2,6 +2,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -113,6 +114,7 @@ public class FirebaseTest {
 		System.out.println("Start Time: " + startTime);
 		
 		Flag.flag = true;
+		// final AtomicBoolean done = new AtomicBoolean(false);
 		
 		testDataRef.orderByKey().equalTo(key).addChildEventListener(
 				new ChildEventListener() {
@@ -121,6 +123,7 @@ public class FirebaseTest {
 				    	TestData readTestData = dataSnapshot.getValue(TestData.class);
 				        System.out.println(System.currentTimeMillis() + ",Read TestData," + testDataKey + "," + readTestData.toString());
 				        Flag.flag = false;
+				        //done.set(true);
 					}
 
 					public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {}
@@ -133,6 +136,7 @@ public class FirebaseTest {
 		});
 		
 		while(Flag.flag){}
+		// while (!done.get());
 	
 		long endTime = System.currentTimeMillis();
 		System.out.println("End Time: " + endTime);
