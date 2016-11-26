@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -12,35 +13,71 @@ public class InsertFirebaseScenario extends AbstractTestingScenario {
 	
 	@Override
 	public Deliverable run(TestingService service, JsonHandler param) throws Exception {
-		int n = 1;
+
+		// Setting parameter
+		int typeIdx = 0; // default = set
+		int n = 1; // the number of data for each process
 		
-		final AtomicBoolean done = new AtomicBoolean(false);
-		ArrayList<Data> testDataList = DataGenerator.generateData(n);
+		if(param.has("type")) {
+			if(param.getAsString("type").equals("push")) {
+				typeIdx = 1;
+			}
+		}		
+		
+		if(param.has("n")) {
+			n = param.getAsInt("n");
+		}
+		
+		// Result parameter 
+		long execTime = 0;
+		
+		// Generate Data
+		List<Data> testDataList = DataGenerator.generateData(n);
+		
+		switch (typeIdx) {
+		case 1: // push
+			long startTimePush = System.currentTimeMillis();
+			
+			for (int ii = 0; ii < n; ii++){
+				final AtomicBoolean flag = new AtomicBoolean(true);
+				
+				service.getInitialReference().child("testMartina").push().setValue(testDataList.get(ii))
+				.addOnCompleteListener(new OnCompleteListener<Void>() {
+				      public void onComplete(Task<Void> task) {
+					        flag.set(false);
+					      }
+					    });
+
+				while (flag.get());
+			}
+			long endTimePush = System.currentTimeMillis();
+			execTime = endTimePush - startTimePush;
+			break;
+
+		default: // set
+			long startTimeSet = System.currentTimeMillis();
+			
+			final AtomicBoolean flag = new AtomicBoolean(true);
+			
+			service.getInitialReference().child("testMartina").setValue(testDataList)
+			.addOnCompleteListener(new OnCompleteListener<Void>() {
+			      public void onComplete(Task<Void> task) {
+				        flag.set(false);
+				      }
+				    });
+
+			while (flag.get());
+		
+			long endTimeSet = System.currentTimeMillis();
+			execTime = endTimeSet - startTimeSet;
+			break;
+		}
 	
-		final long[] elapsedTime = {0};
-		final long startTime = System.currentTimeMillis();
-		
-		service.getInitialReference().child("testData").push().setValue(testDataList.get(0))
-		.addOnCompleteListener(new OnCompleteListener<Void>() {
-		      public void onComplete(Task<Void> task) {
-		        long endTime = System.currentTimeMillis();				
-		  		elapsedTime[0] = endTime - startTime;
-		    	  done.set(true);
-		      }
-		    });
-		while (!done.get());
-//		try {
-////			sync.await();
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 		service.incrExecCount();
-		service.addExecTime(elapsedTime[0]);
-		
+		service.addExecTime(execTime);
 		
 		DeliveryMap result = new DeliveryMap();
-		result.put("elapsed_time", elapsedTime[0]);
+		result.put("elapsed_time", execTime);
 		result.put("execCount", service.getExecCount());
 		result.put("execTime", service.getExecTime());
 		return result;
