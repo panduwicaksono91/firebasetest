@@ -15,7 +15,7 @@ public class InsertFirebaseScenario extends AbstractTestingScenario {
 	public Deliverable run(TestingService service, JsonHandler param) throws Exception {
 
 		// Setting parameter
-		int typeIdx = 0; // default = set
+		int typeIdx = 1; // default = set
 		int n = 1; // the number of data for each process
 		
 		if(param.has("type")) {

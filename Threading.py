@@ -28,7 +28,7 @@ def print_time(threadName, delay, counter):
         counter -= 1
 
 # Create new threads
-for m in range(1,4):
+for m in range(1,2):
     print(m)
     thread = myThread(1, "Thread-" + str(m) , m)
     thread.start()
