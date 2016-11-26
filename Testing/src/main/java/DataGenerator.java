@@ -11,4 +11,8 @@ public class DataGenerator {
 		
 		return result;
 	}
+	
+	public static Data generateDataSingle(int n){
+		return new Data(("testData" + 0),ServerValue.TIMESTAMP);
+	}
 }
