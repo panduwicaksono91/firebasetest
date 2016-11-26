@@ -7,6 +7,6 @@ public class Main {
 		FirebaseListener firebaseListener = new FirebaseListener();
 		firebaseListener.initializeListener();
 		
-		System.out.println("check");
+		System.out.println("Check Listener Working");
 	}
 }
