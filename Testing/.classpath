@@ -33,7 +33,5 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/Mollusca"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/MolluscaHttp"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/SnailCore"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
