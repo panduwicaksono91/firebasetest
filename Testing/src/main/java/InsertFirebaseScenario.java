@@ -12,28 +12,19 @@ public class InsertFirebaseScenario extends AbstractTestingScenario {
 	
 	@Override
 	public Deliverable run(TestingService service, JsonHandler param) throws Exception {
-		System.out.println(service == null ? "NULL" : "NOT NULL");
 		int n = 1;
-		System.out.println(". ===============================");
-		System.out.println(". Test Firebase Using Set Method");
-		System.out.println(". Total number of data: " + n);
+		
 		final AtomicBoolean done = new AtomicBoolean(false);
 		ArrayList<Data> testDataList = DataGenerator.generateData(n);
 	
-//		final CountDownLatch sync = new CountDownLatch(1);
 		final long[] elapsedTime = {0};
 		final long startTime = System.currentTimeMillis();
-		System.out.println(". Start Time: " + startTime);
-		System.out.println(service.getInitialReference() == null ? "NULL" : "NOT NULL");
+		
 		service.getInitialReference().child("testData").push().setValue(testDataList.get(0))
 		.addOnCompleteListener(new OnCompleteListener<Void>() {
 		      public void onComplete(Task<Void> task) {
-		        long endTime = System.currentTimeMillis();
-		  		System.out.println(". End Time: " + endTime);
-				
+		        long endTime = System.currentTimeMillis();				
 		  		elapsedTime[0] = endTime - startTime;
-				
-				System.out.println(". Elapsed Time for: " + elapsedTime[0] + " ms");
 		    	  done.set(true);
 		      }
 		    });
