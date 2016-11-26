@@ -23,7 +23,7 @@ public class InsertFirebaseScenario extends AbstractTestingScenario {
 				typeIdx = 1;
 			}
 		}		
-		
+		System.out.println(typeIdx);
 		if(param.has("n")) {
 			n = param.getAsInt("n");
 		}
