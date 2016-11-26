@@ -13,7 +13,7 @@ public class Main {
 	private static final String FIREBASE_CREDENTIALS = "trader-530e1-firebase-adminsdk-xcw2w-863e57c040.json";
 	private static final String DATABASE_URL = "https://trader-530e1.firebaseio.com";
 	
-	private static final int MYTHREADS = 100000;
+//	private static final int MYTHREADS = 1;
 	private static FirebaseOptions options;
 	private static FirebaseDatabase database;
 	private static DatabaseReference initialReference;
@@ -33,25 +33,32 @@ public class Main {
 		testDataRef = initialReference.child("testData");
 		
 		FirebaseTest firebaseTest = new FirebaseTest(testDataRef);
-		firebaseTest.testInputWithSet(1);
+//		firebaseTest.testDeleteSingleKey("0");
+		firebaseTest.testDeleteRangedKey("0", "2");
+//		firebaseTest.testUpdateSingleKey("0");
+//		firebaseTest.testReadRangedKey("0","KX0KIbzSK8vXxJH6R6y");
 		
-		ExecutorService executor = Executors.newFixedThreadPool(MYTHREADS);
+//		firebaseTest.testInputWithSet(1);
 		
-		long start = System.currentTimeMillis();
-		for (int i = 0; i < 1000; i++) {
- 
-			Runnable worker = new MyRunnable(testDataRef, i);
-			executor.execute(worker);
-		}
-		executor.shutdown();
-		// Wait until all threads are finish
-		while (!executor.isTerminated()) {
- 
-		}
-		long end = System.currentTimeMillis();
-		System.out.println("\nFinished all threads");
-		System.out.println(end - start + " ms");
+//		ExecutorService executor = Executors.newFixedThreadPool(MYTHREADS);
 		
+//		long start = System.currentTimeMillis();
+//		
+//		
+////		for (int i = 0; i < 1000; i++) {
+//// 
+////			Runnable worker = new MyRunnable(testDataRef, i);
+////			executor.execute(worker);
+////		}
+////		executor.shutdown();
+////		// Wait until all threads are finish
+////		while (!executor.isTerminated()) {
+//// 
+////		}
+//		long end = System.currentTimeMillis();
+//		System.out.println("\nFinished all threads");
+//		System.out.println(end - start + " ms");
+//		
 //		GoogleCredential googleCred = GoogleCredential.fromStream(new FileInputStream("trader-530e1-firebase-adminsdk-xcw2w-863e57c040.json"));
 //		GoogleCredential scoped = googleCred.createScoped(
 //		    Arrays.asList(
