@@ -13,7 +13,8 @@ public class InsertFirebaseScenario extends AbstractTestingScenario {
 	
 	@Override
 	public Deliverable run(TestingService service, JsonHandler param) throws Exception {
-
+		String root = service.getRootref();
+		
 		// Setting parameter
 		int typeIdx = 1; // default = set
 		int n = 1; // the number of data for each process
@@ -41,7 +42,7 @@ public class InsertFirebaseScenario extends AbstractTestingScenario {
 			for (int ii = 0; ii < n; ii++){
 				final AtomicBoolean flag = new AtomicBoolean(true);
 				
-				service.getInitialReference().child("testMartina").push().setValue(testDataList.get(ii))
+				service.getInitialReference().child(root).push().setValue(testDataList.get(ii))
 				.addOnCompleteListener(new OnCompleteListener<Void>() {
 				      public void onComplete(Task<Void> task) {
 					        flag.set(false);
@@ -59,7 +60,7 @@ public class InsertFirebaseScenario extends AbstractTestingScenario {
 			
 			final AtomicBoolean flag = new AtomicBoolean(true);
 			
-			service.getInitialReference().child("testMartina").setValue(testDataList)
+			service.getInitialReference().child(root).setValue(testDataList)
 			.addOnCompleteListener(new OnCompleteListener<Void>() {
 			      public void onComplete(Task<Void> task) {
 				        flag.set(false);
