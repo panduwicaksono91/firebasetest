@@ -23,7 +23,7 @@ public class InsertFirebaseScenario extends AbstractTestingScenario {
 				typeIdx = 1;
 			}
 		}		
-		System.out.println(typeIdx);
+		
 		if(param.has("n")) {
 			n = param.getAsInt("n");
 		}
@@ -80,7 +80,7 @@ public class InsertFirebaseScenario extends AbstractTestingScenario {
 		result.put("elapsed_time", execTime);
 		result.put("execCount", service.getExecCount());
 		result.put("execTime", service.getExecTime());
+		
 		return result;
 	}
-
 }
