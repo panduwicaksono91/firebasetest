@@ -67,7 +67,6 @@ public class TestingService extends AbstractService implements
 
 	public void onScenarioReady(IScenario scenario) {
 		if (scenario instanceof AbstractTestingScenario) {
-			System.out.println("get here");
 			((AbstractTestingScenario) scenario).setService(this);
 		}
 

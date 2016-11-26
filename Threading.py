@@ -13,7 +13,7 @@ class myThread (threading.Thread):
         self.counter = counter
     def run(self):
         #print ("Starting " + self.name)
-        r = requests.get('http://localhost:13061/insert_firebase')
+        r = requests.post('http://localhost:13061/insert_firebase', json={"type":"set","n":5})
         data = r.json() 
         print(str(data['execCount']) + " : " + str(data['execTime']) + "\n")
         #print_time(self.name, self.counter, 1)
