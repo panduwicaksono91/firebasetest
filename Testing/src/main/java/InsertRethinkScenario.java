@@ -18,9 +18,9 @@ public class InsertRethinkScenario extends AbstractTestingScenario {
 		
 	@Override
 	public Deliverable run(TestingService service, JsonHandler param) throws Exception {
-		int n = param.getAsInt("n");
-		System.out.println("N : " + n);
-//		int n = 10;
+//		int n = param.getAsInt("n");
+//		System.out.println("N : " + n);
+		int n = 1;
 		System.out.println("Test RethinkDB Create Using Push Method");
 		System.out.println("Total number of data: " + n);
 		

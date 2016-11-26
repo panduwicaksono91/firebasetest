@@ -12,11 +12,12 @@ class myThread (threading.Thread):
         self.name = name
         self.counter = counter
     def run(self):
-        print ("Starting " + self.name)
-        r = requests.get('http://localhost:13061/insert_firebase')
-        print(r.json())
-        print_time(self.name, self.counter, 1)
-        print ("Exiting " + self.name)
+        #print ("Starting " + self.name)
+        r = requests.get('http://localhost:13061/insert_rethink')
+        data = r.json() 
+        print(str(data['execCount']) + " : " + str(data['execTime']) + "\n")
+        #print_time(self.name, self.counter, 1)
+        #print ("Exiting " + self.name)
 
 def print_time(threadName, delay, counter):
     while counter:
@@ -27,7 +28,7 @@ def print_time(threadName, delay, counter):
         counter -= 1
 
 # Create new threads
-for m in range(1,4):
+for m in range(1,1000):
     print(m)
     thread = myThread(1, "Thread-" + str(m) , m)
     thread.start()
