@@ -3,7 +3,6 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.google.firebase.FirebaseApp;
@@ -57,16 +56,16 @@ public class FirebaseTest {
 		System.out.println("Start Time: " + startTime);
 		
 		for (int ii = 0; ii < n; ii++){
-			final CountDownLatch sync = new CountDownLatch(1);
+			final AtomicBoolean flag = new AtomicBoolean(true);
 			
 			testDataRef.push().setValue(testDataList.get(ii))
 			.addOnCompleteListener(new OnCompleteListener<Void>() {
 			      public void onComplete(Task<Void> task) {
-				        sync.countDown();
+				        flag.set(false);
 				      }
 				    });
 
-			sync.await();
+			while (flag.get());
 		}
 		
 		long endTime = System.currentTimeMillis();
@@ -85,18 +84,18 @@ public class FirebaseTest {
 		
 		ArrayList<TestData> testDataList = TestDataGenerator.generateData(n);
 	
-		final CountDownLatch sync = new CountDownLatch(1);
+		final AtomicBoolean flag = new AtomicBoolean(true);
 		
 		long startTime = System.currentTimeMillis();
 		System.out.println("Start Time: " + startTime);
 		testDataRef.setValue(testDataList)
 		.addOnCompleteListener(new OnCompleteListener<Void>() {
 		      public void onComplete(Task<Void> task) {
-		        sync.countDown();
+		        flag.set(false);
 		      }
 		    });
 
-		sync.await();
+		while (flag.get());
 		
 		long endTime = System.currentTimeMillis();
 		System.out.println("End Time: " + endTime);
@@ -115,16 +114,14 @@ public class FirebaseTest {
 		long startTime = System.currentTimeMillis();
 		System.out.println("Start Time: " + startTime);
 		
-		Flag.flag = true;
-		// final AtomicBoolean done = new AtomicBoolean(false);
+		final AtomicBoolean flag = new AtomicBoolean(true);
 		
 		ChildEventListener listener = new ChildEventListener() {
 			public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
 				String testDataKey = dataSnapshot.getKey();
 		    	TestData readTestData = dataSnapshot.getValue(TestData.class);
 		        System.out.println(System.currentTimeMillis() + ",Read TestData," + testDataKey + "," + readTestData.toString());
-		        Flag.flag = false;
-		        //done.set(true);
+		        flag.set(false);
 			}
 
 			public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {}
@@ -139,9 +136,7 @@ public class FirebaseTest {
 		testDataRef.orderByKey().equalTo(key).addChildEventListener(
 				listener);
 		
-		while(Flag.flag){ System.out.println("Still Waiting"); }
-		// while (!done.get());
-		testDataRef.removeEventListener(listener);
+		while (flag.get());
 		
 		long endTime = System.currentTimeMillis();
 		System.out.println("End Time: " + endTime);
@@ -149,6 +144,7 @@ public class FirebaseTest {
 		long elapsedTime = endTime - startTime;
 		
 		System.out.println("Elapsed Time for ("+ key + "): " + elapsedTime + " ms");
+		testDataRef.removeEventListener(listener);
 	}
 	
 	public void testReadRangedKey(String key1, String key2){
@@ -159,14 +155,16 @@ public class FirebaseTest {
 		long startTime = System.currentTimeMillis();
 		System.out.println("Start Time: " + startTime);
 		
-		Flag.flag = true;
-			
+		final AtomicBoolean flag = new AtomicBoolean(true);
+		final String limitKey = key2;	
+		
 		ChildEventListener listener = new ChildEventListener() {
 			public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
 				String testDataKey = dataSnapshot.getKey();
 		    	TestData readTestData = dataSnapshot.getValue(TestData.class);
 		        System.out.println(System.currentTimeMillis() + ",Read TestData," + testDataKey + "," + readTestData.toString());
-	        	Flag.flag = false;
+	        	if (testDataKey.equals(limitKey)) 
+	        		flag.set(false);
 			}
 
 			public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {}
@@ -181,25 +179,21 @@ public class FirebaseTest {
 		testDataRef.orderByKey().startAt(key1).endAt(key2).addChildEventListener(
 			listener);
 		
-		while(Flag.flag){ System.out.println("Still Waiting"); }
+		while(flag.get());
 	
-		testDataRef.removeEventListener(listener);
-		
 		long endTime = System.currentTimeMillis();
 		System.out.println("End Time: " + endTime);
 		
 		long elapsedTime = endTime - startTime;
 		
 		System.out.println("Elapsed Time for ("+ key1 + "-" + key2 + "): " + elapsedTime + " ms");
+		testDataRef.removeEventListener(listener);
 	}
 	
 	public void testUpdateSingleKey(String key) throws InterruptedException {
 		System.out.println("===============================");
 		System.out.println("Test Firebase Update Single Key");
 		System.out.println("Update data: " + key);
-		
-		Flag.flag = true;
-		// final AtomicBoolean done = new AtomicBoolean(false);
 		
 		DatabaseReference updatedChildRef = testDataRef.child(key);
 		String updateKey = "testDataUpdated";
@@ -209,20 +203,19 @@ public class FirebaseTest {
 		updateMap.put("testName", updateTestData.testName);
 		updateMap.put("testTime",updateTestData.testTime);
 		
-
+		final AtomicBoolean flag = new AtomicBoolean(true);
+		
 		long startTime = System.currentTimeMillis();
 		System.out.println("Start Time: " + startTime);
-		
-		final CountDownLatch sync = new CountDownLatch(1);
 		
 		updatedChildRef.updateChildren(updateMap).addOnCompleteListener(
 				new OnCompleteListener<Void>() {
 				      public void onComplete(Task<Void> task) {
-				        sync.countDown();
+				        flag.set(false);
 				      }
 		    });
 
-		sync.await();
+		while(flag.get());
 		
 		long endTime = System.currentTimeMillis();
 		System.out.println("End Time: " + endTime);
@@ -242,24 +235,21 @@ public class FirebaseTest {
 		System.out.println("Test Firebase Delete Single Key");
 		System.out.println("Delete data: " + key);
 		
-		Flag.flag = true;
-		// final AtomicBoolean done = new AtomicBoolean(false);
+		final AtomicBoolean flag = new AtomicBoolean(true);
 		
 		DatabaseReference updatedChildRef = testDataRef.child(key);
 		
 		long startTime = System.currentTimeMillis();
 		System.out.println("Start Time: " + startTime);
 		
-		final CountDownLatch sync = new CountDownLatch(1);
-		
 		updatedChildRef.setValue(null).addOnCompleteListener(
 				new OnCompleteListener<Void>() {
 				      public void onComplete(Task<Void> task) {
-				        sync.countDown();
+				        flag.set(false);
 				      }
 		    });
 
-		sync.await();
+		while(flag.get());
 		
 		long endTime = System.currentTimeMillis();
 		System.out.println("End Time: " + endTime);
@@ -274,9 +264,6 @@ public class FirebaseTest {
 		System.out.println("Test Firebase Delete Ranged Key");
 		System.out.println("Delete data: " + key1 + " - " + key2);
 		
-		Flag.flag = true;
-		// final AtomicBoolean done = new AtomicBoolean(false);
-		
 		int key1int = Integer.parseInt(key1);
 		int key2int = Integer.parseInt(key2);
 		int length = key2int - key1int + 1;
@@ -290,16 +277,16 @@ public class FirebaseTest {
 		for(int ii = 0; ii < length; ii++) {
 			DatabaseReference updatedChildRef = testDataRef.child(deletedKey[ii]);
 		
-			final CountDownLatch sync = new CountDownLatch(1);
+			final AtomicBoolean flag = new AtomicBoolean(true);
 			
 			updatedChildRef.setValue(null).addOnCompleteListener(
 					new OnCompleteListener<Void>() {
 					      public void onComplete(Task<Void> task) {
-					        sync.countDown();
+					        flag.set(false);
 					      }
 			    });
 	
-			sync.await();
+			while(flag.get());
 		}
 		
 		long endTime = System.currentTimeMillis();

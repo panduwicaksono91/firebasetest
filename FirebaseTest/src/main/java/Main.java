@@ -34,9 +34,9 @@ public class Main {
 		
 		FirebaseTest firebaseTest = new FirebaseTest(testDataRef);
 //		firebaseTest.testDeleteSingleKey("0");
-		firebaseTest.testDeleteRangedKey("0", "2");
+//		firebaseTest.testDeleteRangedKey("0", "2");
 //		firebaseTest.testUpdateSingleKey("0");
-//		firebaseTest.testReadRangedKey("0","KX0KIbzSK8vXxJH6R6y");
+		firebaseTest.testReadRangedKey("0","-KX0KIc3CHKJuLyVdfTn");
 		
 //		firebaseTest.testInputWithSet(1);
 		
