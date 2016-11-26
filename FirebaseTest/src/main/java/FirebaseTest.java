@@ -30,24 +30,12 @@ public class FirebaseTest {
 	
 	public FirebaseTest(DatabaseReference testDataRef) throws FileNotFoundException {
 		this.testDataRef = testDataRef;
-		// Initialize the app with a service account, granting admin privileges
-//		this.options = new FirebaseOptions.Builder()
-//				  .setServiceAccount(new FileInputStream(FIREBASE_CREDENTIALS))
-//				  .setDatabaseUrl(DATABASE_URL)
-//				  .build();
-//		FirebaseApp.initializeApp(options);
-//		
-//		// Get a reference to our users
-//		this.database = FirebaseDatabase.getInstance();
-//		this.initialReference = database.getReference();	
-//		this.testDataRef = initialReference.child("testData");
-		
 	}
 	
 
 	public void testInputWithPush(int n) throws InterruptedException{
 		System.out.println("===============================");
-		System.out.println("Test Firebase Using Push Method");
+		System.out.println("Test Firebase Input Using Push Method");
 		System.out.println("Total number of data: " + n);
 		
 		ArrayList<TestData> testDataList = TestDataGenerator.generateData(n);
@@ -74,12 +62,13 @@ public class FirebaseTest {
 		long elapsedTime = endTime - startTime;
 		
 		System.out.println("Elapsed Time ("+ n + "): " + elapsedTime + " ms");
+		System.out.println("===============================");
 		
 	}
 	
 	public void testInputWithSet(int n) throws InterruptedException{
 		System.out.println("===============================");
-		System.out.println("Test Firebase Using Set Method");
+		System.out.println("Test Firebase Input Using Set Method");
 		System.out.println("Total number of data: " + n);
 		
 		ArrayList<TestData> testDataList = TestDataGenerator.generateData(n);
@@ -88,6 +77,7 @@ public class FirebaseTest {
 		
 		long startTime = System.currentTimeMillis();
 		System.out.println("Start Time: " + startTime);
+		
 		testDataRef.setValue(testDataList)
 		.addOnCompleteListener(new OnCompleteListener<Void>() {
 		      public void onComplete(Task<Void> task) {
@@ -103,16 +93,13 @@ public class FirebaseTest {
 		long elapsedTime = endTime - startTime;
 		
 		System.out.println("Elapsed Time for ("+ n + "): " + elapsedTime + " ms");
-	
+		System.out.println("===============================");
 	}
 	
 	public void testReadSingleKey(String key){
 		System.out.println("===============================");
 		System.out.println("Test Firebase Read Single Key");
 		System.out.println("Read data: " + key);
-		
-		long startTime = System.currentTimeMillis();
-		System.out.println("Start Time: " + startTime);
 		
 		final AtomicBoolean flag = new AtomicBoolean(true);
 		
@@ -133,6 +120,9 @@ public class FirebaseTest {
 			public void onCancelled(DatabaseError databaseError) {}
 		};
 		
+		long startTime = System.currentTimeMillis();
+		System.out.println("Start Time: " + startTime);
+		
 		testDataRef.orderByKey().equalTo(key).addChildEventListener(
 				listener);
 		
@@ -144,6 +134,7 @@ public class FirebaseTest {
 		long elapsedTime = endTime - startTime;
 		
 		System.out.println("Elapsed Time for ("+ key + "): " + elapsedTime + " ms");
+		System.out.println("===============================");
 		testDataRef.removeEventListener(listener);
 	}
 	
@@ -151,9 +142,6 @@ public class FirebaseTest {
 		System.out.println("===============================");
 		System.out.println("Test Firebase Read Ranged Key");
 		System.out.println("Read data: " + key1 + " - " + key2);
-		
-		long startTime = System.currentTimeMillis();
-		System.out.println("Start Time: " + startTime);
 		
 		final AtomicBoolean flag = new AtomicBoolean(true);
 		final String limitKey = key2;	
@@ -176,6 +164,9 @@ public class FirebaseTest {
 			public void onCancelled(DatabaseError databaseError) {}
 		};
 		
+		long startTime = System.currentTimeMillis();
+		System.out.println("Start Time: " + startTime);
+		
 		testDataRef.orderByKey().startAt(key1).endAt(key2).addChildEventListener(
 			listener);
 		
@@ -186,7 +177,8 @@ public class FirebaseTest {
 		
 		long elapsedTime = endTime - startTime;
 		
-		System.out.println("Elapsed Time for ("+ key1 + "-" + key2 + "): " + elapsedTime + " ms");
+		System.out.println("Elapsed Time for ("+ key1 + " - " + key2 + "): " + elapsedTime + " ms");
+		System.out.println("===============================");
 		testDataRef.removeEventListener(listener);
 	}
 	
@@ -195,18 +187,19 @@ public class FirebaseTest {
 		System.out.println("Test Firebase Update Single Key");
 		System.out.println("Update data: " + key);
 		
-		DatabaseReference updatedChildRef = testDataRef.child(key);
 		String updateKey = "testDataUpdated";
 		TestData updateTestData = new TestData(updateKey, ServerValue.TIMESTAMP);
 		
 		Map<String, Object> updateMap = new HashMap<String, Object>();
 		updateMap.put("testName", updateTestData.testName);
-		updateMap.put("testTime",updateTestData.testTime);
+		updateMap.put("testTime", updateTestData.testTime);
 		
 		final AtomicBoolean flag = new AtomicBoolean(true);
 		
 		long startTime = System.currentTimeMillis();
 		System.out.println("Start Time: " + startTime);
+		
+		DatabaseReference updatedChildRef = testDataRef.child(key);
 		
 		updatedChildRef.updateChildren(updateMap).addOnCompleteListener(
 				new OnCompleteListener<Void>() {
@@ -223,6 +216,7 @@ public class FirebaseTest {
 		long elapsedTime = endTime - startTime;
 		
 		System.out.println("Elapsed Time for ("+ key + "): " + elapsedTime + " ms");
+		System.out.println("===============================");
 	}
 	
 	
@@ -237,10 +231,10 @@ public class FirebaseTest {
 		
 		final AtomicBoolean flag = new AtomicBoolean(true);
 		
-		DatabaseReference updatedChildRef = testDataRef.child(key);
-		
 		long startTime = System.currentTimeMillis();
 		System.out.println("Start Time: " + startTime);
+		
+		DatabaseReference updatedChildRef = testDataRef.child(key);
 		
 		updatedChildRef.setValue(null).addOnCompleteListener(
 				new OnCompleteListener<Void>() {
@@ -257,6 +251,7 @@ public class FirebaseTest {
 		long elapsedTime = endTime - startTime;
 		
 		System.out.println("Elapsed Time for ("+ key + "): " + elapsedTime + " ms");
+		System.out.println("===============================");
 	}
 	
 	public void testDeleteRangedKey(String key1, String key2) throws InterruptedException {
@@ -295,5 +290,6 @@ public class FirebaseTest {
 		long elapsedTime = endTime - startTime;
 		
 		System.out.println("Elapsed Time for ("+ key1 + " - " + key2 + "): " + elapsedTime + " ms");
+		System.out.println("===============================");
 	}
 }

@@ -13,7 +13,6 @@ public class Main {
 	private static final String FIREBASE_CREDENTIALS = "trader-530e1-firebase-adminsdk-xcw2w-863e57c040.json";
 	private static final String DATABASE_URL = "https://trader-530e1.firebaseio.com";
 	
-//	private static final int MYTHREADS = 1;
 	private static FirebaseOptions options;
 	private static FirebaseDatabase database;
 	private static DatabaseReference initialReference;
@@ -33,12 +32,15 @@ public class Main {
 		testDataRef = initialReference.child("testData");
 		
 		FirebaseTest firebaseTest = new FirebaseTest(testDataRef);
+		// all test scenario
+//		int n = 2;
+//		firebaseTest.testInputWithPush(n);
+//		firebaseTest.testInputWithSet(n);
+//		firebaseTest.testReadSingleKey("0");
+//		firebaseTest.testReadRangedKey("0","-KX0KIc3CHKJuLyVdfTn");
+//		firebaseTest.testUpdateSingleKey("0");
 //		firebaseTest.testDeleteSingleKey("0");
 //		firebaseTest.testDeleteRangedKey("0", "2");
-//		firebaseTest.testUpdateSingleKey("0");
-		firebaseTest.testReadRangedKey("0","-KX0KIc3CHKJuLyVdfTn");
-		
-//		firebaseTest.testInputWithSet(1);
 		
 //		ExecutorService executor = Executors.newFixedThreadPool(MYTHREADS);
 		
@@ -69,54 +71,7 @@ public class Main {
 //		scoped.refreshToken();
 //		String token = scoped.getAccessToken();
 //		System.out.println(token);
-		
-//			FirebaseTest firebaseTest = new FirebaseTest();
-//			int n = 2;
-//			firebaseTest.testInputWithSet(1);
-//			firebaseTest.testInputWithSet(n);
-//			firebaseTest.testInputWithPush(n);
 			
-			
-			
-					
-			// Retrieve Data
-			// Create a listener for any delete event, currently working!
-			
-//			ref.addChildEventListener(new ChildEventListener() {
-//			    public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
-//			    	Users addedUsers = dataSnapshot.getValue(Users.class);
-//			        System.out.println("Added Users: \n" + addedUsers.toString());	
-//			    }
-//
-//			    public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {
-//			    	Users changedUsers = dataSnapshot.getValue(Users.class);
-//			        System.out.println("Changed Users: \n" + changedUsers.toString());
-//			    }
-//
-//			    public void onChildRemoved(DataSnapshot dataSnapshot) {
-//			        Users removedUsers = dataSnapshot.getValue(Users.class);
-//			        System.out.println("Deleted Users: \n" + removedUsers.toString());
-//			    }
-//
-//			    public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {}
-//
-//			    public void onCancelled(DatabaseError databaseError) {}
-//			});
-//			
-//			Thread.sleep(10000);
-			
-			// Check Value Event Listener
-//			usersRef.addValueEventListener(new ValueEventListener() {
-//			    public void onDataChange(DataSnapshot dataSnapshot) {
-//			        Users users = dataSnapshot.getValue(Users.class);
-//			        System.out.println(users);
-//			    }
-//			    public void onCancelled(DatabaseError databaseError) {
-//			        System.out.println("The read failed: " + databaseError.getCode());
-//			    }
-//			});
-//			
-//			Thread.sleep(10000);
 			
 	}
 
