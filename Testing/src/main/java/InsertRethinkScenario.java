@@ -1,8 +1,8 @@
 
-import java.util.ArrayList;
-import java.util.Map;
+import java.util.List;
 
 import com.rethinkdb.RethinkDB;
+import com.rethinkdb.model.MapObject;
 import com.rethinkdb.net.Connection;
 
 import mollusca.common.util.JsonHandler;
@@ -18,48 +18,70 @@ public class InsertRethinkScenario extends AbstractTestingScenario {
 		
 	@Override
 	public Deliverable run(TestingService service, JsonHandler param) throws Exception {
-//		int n = param.getAsInt("n");
-//		System.out.println("N : " + n);
-		int n = 1;
-		System.out.println("Test RethinkDB Create Using Push Method");
-		System.out.println("Total number of data: " + n);
+
+		// Setting parameter
+		int typeIdx = 0; // default = set
+		int n = 1; // the number of data for each process
 		
-		ArrayList<Data> testDataList = DataGenerator.generateData(n);
-		
-		long startTime = System.currentTimeMillis();
-		System.out.println("Start Time: " + startTime);
-		
-		for (int ii = 0; ii < n; ii++){
-			Map<String, Object> s = r.table("testData").insert(
-					r.hashMap("testName",testDataList.get(ii).getName())
-					.with("testTime",r.now().toEpochTime())
-			).run(conn);
-//			for (Map.Entry<String, Object> entry : s.entrySet()) {
-//				System.out.println(entry.getKey());
-//				System.out.println(entry.getValue());
-//			}
+		if(param.has("type")) {
+			if(param.getAsString("type").equals("push")) {
+				typeIdx = 1;
+			}
+		}		
+		System.out.println(typeIdx);
+		if(param.has("n")) {
+			n = param.getAsInt("n");
 		}
 		
-		long endTime = System.currentTimeMillis();
-		System.out.println("End Time: " + endTime);
+		// Result parameter 
+		long execTime = 0;
 		
-		long elapsedTime = endTime - startTime;
+		// Generate Data
+		List<Data> testDataList = DataGenerator.generateData(n);
 		
-		System.out.println("Elapsed Time ("+ n + "): " + elapsedTime);
-		
-		// close the connection
-//		conn.close();
+		switch (typeIdx) {
+		case 1: // push
+			long startTimePush = System.currentTimeMillis();
+			
+			for (int ii = 0; ii < n; ii++){
+				r.table("testData").insert(
+						r.hashMap("testName",testDataList.get(ii).getName())
+						.with("testTime",r.now().toEpochTime())
+				).run(conn);
+			}
+			
+			long endTimePush = System.currentTimeMillis();
+			execTime = endTimePush - startTimePush;
+			break;
+
+		default: // set
+			
+			// initialize the data
+			MapObject[] mo = new MapObject[n];
+			for(int ii = 0; ii < n; ii++) {
+				mo[ii] = r.hashMap("id",ii)
+				.with("testName", testDataList.get(ii).getName())
+				.with("testTime", r.now().toEpochTime());
+			}
+			
+			long startTimeSet = System.currentTimeMillis();
+			
+			// insert the data into database
+			r.table("testData").insert(mo).run(conn);
+					
+			long endTimeSet = System.currentTimeMillis();
+			execTime = endTimeSet - startTimeSet;
+			break;
+		}
 		
 		service.incrExecCount();
-		service.addExecTime(elapsedTime);
+		service.addExecTime(execTime);
 		
 		DeliveryMap result = new DeliveryMap();
-		result.put("elapsed_time", elapsedTime + " ms");
+		result.put("elapsed_time", execTime + " ms");
 		result.put("execCount", service.getExecCount());
 		result.put("execTime", service.getExecTime() + " ms" );
 		
-		
 		return result;
 	}
-
 }

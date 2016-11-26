@@ -31,7 +31,7 @@ public class FirebaseListener {
 		// Get a reference to our test data
 		this.database = FirebaseDatabase.getInstance();
 		this.initialReference = database.getReference();	
-		this.testDataRef = initialReference.child("testData");
+		this.testDataRef = initialReference.child("testMartina");
 		
 	}
 	
