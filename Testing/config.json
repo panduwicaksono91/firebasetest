@@ -1,0 +1,25 @@
+{
+    
+	"server":{
+		"instance": "Advanced Database Project Testing Firebase vs RethinkDB",
+	   	"port": 13061,
+	   	"worker": 800
+	},
+	
+	"airasia_arms":{
+		"account":{
+			/*"username": "APIIDPGTN",
+			"password": "API@78I2",
+			"org_id": "IDTADYACGK"*/
+			"username": "APIIDPGTN",
+			"password": "D9g7N@iNd0",
+			"org_id": "IDTGTIKCGK"
+		},
+		"env_target":"prod",
+		"env":{
+			"uat":"https://testarms.airasia.com/aaws/ARMSWS.asmx",
+			"prod":"https://arms.airasia.com/aaws/ARMSWS.asmx"
+		}
+	}
+    
+}
