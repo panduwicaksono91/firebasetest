@@ -74,6 +74,8 @@ public class InsertRethinkScenario extends AbstractTestingScenario {
 			break;
 		}
 		
+//		conn.close();
+		
 		service.incrExecCount();
 		service.addExecTime(execTime);
 		

@@ -20,4 +20,9 @@ public class Data {
 		this.name = name;
 		this.time = time;
 	}
+	
+	public Data() {
+		this.name = "";
+		this.time = "";
+	}
 }

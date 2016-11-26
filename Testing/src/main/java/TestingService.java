@@ -19,7 +19,7 @@ public class TestingService extends AbstractService implements
 	
 	private static final String FIREBASE_CREDENTIALS = "trader-530e1-firebase-adminsdk-xcw2w-863e57c040.json";
 	private static final String DATABASE_URL = "https://trader-530e1.firebaseio.com";
-	
+	private static final String rootRef = "testMartina";
 	private static final int MYTHREADS = 100000;
 	private FirebaseOptions options;
 	private FirebaseDatabase database;
@@ -77,7 +77,8 @@ public class TestingService extends AbstractService implements
 		ScenarioBuilders builders = new ScenarioBuilders();
 		builders.put("insert_firebase", new InsertFirebaseScenarioBuilder());
 		builders.put("insert_rethink", new InsertRethinkScenarioBuilder());
-		
+		builders.put("read_firebase", new ReadFirebaseScenarioBuilder());
+		builders.put("read_rethink", new ReadRethinkScenarioBuilder());
 		return builders;
 	}
 
@@ -87,6 +88,10 @@ public class TestingService extends AbstractService implements
 
 	public void setInitialReference(DatabaseReference initialReference) {
 		this.initialReference = initialReference;
+	}
+
+	public String getRootref() {
+		return rootRef;
 	}
 
 }
