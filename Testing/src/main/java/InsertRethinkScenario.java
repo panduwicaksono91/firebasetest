@@ -59,8 +59,7 @@ public class InsertRethinkScenario extends AbstractTestingScenario {
 			// initialize the data
 			MapObject[] mo = new MapObject[n];
 			for(int ii = 0; ii < n; ii++) {
-				mo[ii] = r.hashMap("id",ii)
-				.with("testName", testDataList.get(ii).getName())
+				mo[ii] = r.hashMap("testName", testDataList.get(ii).getName())
 				.with("testTime", r.now().toEpochTime());
 			}
 			
