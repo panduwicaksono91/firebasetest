@@ -16,7 +16,7 @@ public class InsertFirebaseScenario extends AbstractTestingScenario {
 		String root = service.getRootref();
 		
 		// Setting parameter
-		int typeIdx = 1; // default = set
+		int typeIdx = 0; // default = set
 		int n = 1; // the number of data for each process
 		
 		if(param.has("type")) {
