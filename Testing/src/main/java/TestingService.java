@@ -79,6 +79,9 @@ public class TestingService extends AbstractService implements
 		builders.put("insert_rethink", new InsertRethinkScenarioBuilder());
 		builders.put("read_firebase", new ReadFirebaseScenarioBuilder());
 		builders.put("read_rethink", new ReadRethinkScenarioBuilder());
+		builders.put("update_firebase", new UpdateFirebaseScenarioBuilder());
+		builders.put("delete_firebase", new DeleteFirebaseScenarioBuilder());
+		
 		return builders;
 	}
 
