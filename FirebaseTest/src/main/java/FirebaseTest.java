@@ -204,7 +204,7 @@ public class FirebaseTest {
 		updatedChildRef.updateChildren(updateMap).addOnCompleteListener(
 				new OnCompleteListener<Void>() {
 				      public void onComplete(Task<Void> task) {
-				        flag.set(false);
+					      flag.set(false);
 				      }
 		    });
 
@@ -220,9 +220,45 @@ public class FirebaseTest {
 	}
 	
 	
-//	public void testUpdateRangedKey(int key1, int key2) {}
-	// lupakan, RethinkDB nya gak bisa, nanti diomongin lagi
-	// soalnya di Firebase nya bisa, Rethink harus satu2
+	public void testUpdateRangedKey(int key1, int key2) {
+		System.out.println("===============================");
+		System.out.println("Test Firebase Update Single Key");
+		System.out.println("Update data (" + key1 + " - " + key2 + ")");
+		
+		Map<String, Object> updateMap = new HashMap<String, Object>();
+		
+		for(int ii = key1 ; ii < (key2 + 1); ii++){
+			String updateKey = "" + ii;
+			String updateName = "testData" + ii + "Updated";
+			TestData updateTestData = new TestData(updateName, ServerValue.TIMESTAMP);
+			
+			updateMap.put(updateKey + "/testName", updateTestData.testName);
+			updateMap.put(updateKey + "/testTime", updateTestData.testTime);
+		}
+		
+		final AtomicBoolean flag = new AtomicBoolean(true);
+		
+		long startTime = System.currentTimeMillis();
+		System.out.println("Start Time: " + startTime);
+		
+		testDataRef.updateChildren(updateMap).addOnCompleteListener(
+				new OnCompleteListener<Void>() {
+				      public void onComplete(Task<Void> task) {
+					      flag.set(false);
+				      }
+		    });
+
+		while(flag.get());
+		
+		long endTime = System.currentTimeMillis();
+		System.out.println("End Time: " + endTime);
+		
+		long elapsedTime = endTime - startTime;
+		
+		System.out.println("Elapsed Time for ("+ key1 + " - " + key2 + "): " + elapsedTime + " ms");
+		System.out.println("===============================");
+	}
+	
 	
 	public void testDeleteSingleKey(String key) throws InterruptedException {
 		System.out.println("===============================");

@@ -33,12 +33,13 @@ public class Main {
 		
 		FirebaseTest firebaseTest = new FirebaseTest(testDataRef);
 		// all test scenario
-		int n = 1;
-		firebaseTest.testInputWithPush(n);
-//		firebaseTest.testInputWithSet(n);
+//		int n = 1;
+//		firebaseTest.testInputWithPush(n);
+//		firebaseTest.testInputWithSet(10);
 //		firebaseTest.testReadSingleKey("0");
 //		firebaseTest.testReadRangedKey("0","-KX0KIc3CHKJuLyVdfTn");
 //		firebaseTest.testUpdateSingleKey("0");
+		firebaseTest.testUpdateRangedKey(5, 7);
 //		firebaseTest.testDeleteSingleKey("0");
 //		firebaseTest.testDeleteRangedKey("0", "2");
 		

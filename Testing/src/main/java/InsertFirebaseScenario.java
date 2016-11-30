@@ -60,7 +60,7 @@ public class InsertFirebaseScenario extends AbstractTestingScenario {
 			
 			final AtomicBoolean flag = new AtomicBoolean(true);
 			
-			service.getInitialReference().child(root).setValue(testDataList.toArray())
+			service.getInitialReference().child(root).setValue(testDataList)
 			.addOnCompleteListener(new OnCompleteListener<Void>() {
 			      public void onComplete(Task<Void> task) {
 				        flag.set(false);
