@@ -39,9 +39,9 @@ public class Main {
 //		firebaseTest.testReadSingleKey("0");
 //		firebaseTest.testReadRangedKey("0","-KX0KIc3CHKJuLyVdfTn");
 //		firebaseTest.testUpdateSingleKey("0");
-		firebaseTest.testUpdateRangedKey(5, 7);
+//		firebaseTest.testUpdateRangedKey(5, 7);
 //		firebaseTest.testDeleteSingleKey("0");
-//		firebaseTest.testDeleteRangedKey("0", "2");
+		firebaseTest.testDeleteRangedKey("0", "2");
 		
 //		ExecutorService executor = Executors.newFixedThreadPool(MYTHREADS);
 		

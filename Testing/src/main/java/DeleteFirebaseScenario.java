@@ -1,3 +1,5 @@
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.google.firebase.database.DatabaseReference;
@@ -30,7 +32,7 @@ public class DeleteFirebaseScenario extends AbstractTestingScenario {
 			
 			DatabaseReference updatedChildRef = service.getInitialReference().child(root).child(key);
 			
-			updatedChildRef.setValue(null).addOnCompleteListener(
+			updatedChildRef.removeValue().addOnCompleteListener(
 					new OnCompleteListener<Void>() {
 					      public void onComplete(Task<Void> task) {
 					        flag.set(false);
@@ -46,27 +48,57 @@ public class DeleteFirebaseScenario extends AbstractTestingScenario {
 			
 			int key1int = Integer.parseInt(startId);
 			int key2int = Integer.parseInt(endId);
-			int length = key2int - key1int + 1;
-			String[] deletedKey = new String[length];
-			for(int ii = 0; ii < length; ii++)
-				deletedKey[ii] = "" + (ii + length - 1);
+			
+			Map<String, Object> updateMap = new HashMap<String, Object>();
+			
+			for(int ii = key1int ; ii < (key2int + 1); ii++){
+				String updateKey = "" + ii;
+//				String updateName = "testData" + ii + "Updated";
+//				TestData updateTestData = new TestData(updateName, ServerValue.TIMESTAMP);
+				
+				updateMap.put(updateKey, null);
+//				updateMap.put(updateKey + "/testTime", updateTestData.testTime);
+			}
+			
+			final AtomicBoolean flag = new AtomicBoolean(true);
 			
 			long startTime = System.currentTimeMillis();
+			System.out.println("Start Time: " + startTime);
 			
-			for(int ii = 0; ii < length; ii++) {
-				DatabaseReference updatedChildRef = service.getInitialReference().child(root).child(deletedKey[ii]);
+			DatabaseReference updatedChildRef = service.getInitialReference().child(root);
 			
-				final AtomicBoolean flag = new AtomicBoolean(true);
-				
-				updatedChildRef.setValue(null).addOnCompleteListener(
-						new OnCompleteListener<Void>() {
-						      public void onComplete(Task<Void> task) {
-						        flag.set(false);
-						      }
-				    });
-		
-				while(flag.get());
-			}
+			updatedChildRef.updateChildren(updateMap).addOnCompleteListener(
+					new OnCompleteListener<Void>() {
+					      public void onComplete(Task<Void> task) {
+						      flag.set(false);
+					      }
+			    });
+
+			while(flag.get());
+			
+//			int key1int = Integer.parseInt(startId);
+//			int key2int = Integer.parseInt(endId);
+//			int length = key2int - key1int + 1;
+//			String[] deletedKey = new String[length];
+//			for(int ii = 0; ii < length; ii++)
+//				deletedKey[ii] = "" + (ii + length - 1);
+//			
+//			long startTime = System.currentTimeMillis();
+//			
+//			for(int ii = 0; ii < length; ii++) {
+//				DatabaseReference updatedChildRef = service.getInitialReference().child(root).child(deletedKey[ii]);
+//			
+//				final AtomicBoolean flag = new AtomicBoolean(true);
+//				
+//				updatedChildRef.removeValue().addOnCompleteListener(
+//						new OnCompleteListener<Void>() {
+//						      public void onComplete(Task<Void> task) {
+//						        flag.set(false);
+//						      }
+//				    });
+//		
+//				while(flag.get());
+//			}
 			
 			long endTime = System.currentTimeMillis();
 			
