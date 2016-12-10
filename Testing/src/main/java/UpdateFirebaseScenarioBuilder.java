@@ -6,7 +6,7 @@ public class UpdateFirebaseScenarioBuilder extends AbstractScenarioBuilder {
 
 	@Override
 	public IScenario build() throws Fault {
-		// TODO Auto-generated method stub
+
 		return new UpdateFirebaseScenario();
 	}
 
