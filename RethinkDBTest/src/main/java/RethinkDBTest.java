@@ -235,7 +235,7 @@ public class RethinkDBTest {
 		System.out.println("===============================");
 		
 		// close the connection
-		conn.close();
+//		conn.close();
 	}
 	
 	public void testDeleteRangedKey(int key1, int key2){
@@ -259,7 +259,7 @@ public class RethinkDBTest {
 		System.out.println("===============================");
 		
 		// close the connection
-		conn.close();
+//		conn.close();
 	}
 	
 }

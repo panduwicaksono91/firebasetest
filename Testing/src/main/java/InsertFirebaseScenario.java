@@ -39,18 +39,19 @@ public class InsertFirebaseScenario extends AbstractTestingScenario {
 		case 1: // push
 			long startTimePush = System.currentTimeMillis();
 			
-			for (int ii = 0; ii < n; ii++){
-				final AtomicBoolean flag = new AtomicBoolean(true);
+//			for (int ii = 0; ii < n; ii++){
+				final AtomicBoolean flag1 = new AtomicBoolean(true);
 				
-				service.getInitialReference().child(root).push().setValue(testDataList.get(ii))
+//				service.getInitialReference().child(root).push().setValue(testDataList.get(ii))
+				service.getInitialReference().child(root).push().setValue(testDataList)
 				.addOnCompleteListener(new OnCompleteListener<Void>() {
 				      public void onComplete(Task<Void> task) {
-					        flag.set(false);
+					        flag1.set(false);
 					      }
 					    });
 
-				while (flag.get());
-			}
+				while (flag1.get());
+//			}
 			long endTimePush = System.currentTimeMillis();
 			execTime = endTimePush - startTimePush;
 			break;
@@ -58,16 +59,16 @@ public class InsertFirebaseScenario extends AbstractTestingScenario {
 		default: // set
 			long startTimeSet = System.currentTimeMillis();
 			
-			final AtomicBoolean flag = new AtomicBoolean(true);
+			final AtomicBoolean flag2 = new AtomicBoolean(true);
 			
 			service.getInitialReference().child(root).setValue(testDataList)
 			.addOnCompleteListener(new OnCompleteListener<Void>() {
 			      public void onComplete(Task<Void> task) {
-				        flag.set(false);
+				        flag2.set(false);
 				      }
 				    });
 
-			while (flag.get());
+			while (flag2.get());
 		
 			long endTimeSet = System.currentTimeMillis();
 			execTime = endTimeSet - startTimeSet;
