@@ -13,6 +13,9 @@ public class Main {
 	private static final String FIREBASE_CREDENTIALS = "trader-530e1-firebase-adminsdk-xcw2w-863e57c040.json";
 	private static final String DATABASE_URL = "https://trader-530e1.firebaseio.com";
 	
+//	private static final String FIREBASE_CREDENTIALS = "testingjava-a634e-firebase-adminsdk-8w1oc-daf2afd918.json";
+//	private static final String DATABASE_URL = "https://testingjava-a634e.firebaseio.com/";
+	
 	private static FirebaseOptions options;
 	private static FirebaseDatabase database;
 	private static DatabaseReference initialReference;
@@ -26,20 +29,20 @@ public class Main {
 		  .build();
 		FirebaseApp.initializeApp(options);
 		
-		// Get a reference to our users
+		// Get a reference to test data
 		database = FirebaseDatabase.getInstance();
 		initialReference = database.getReference();	
 		testDataRef = initialReference.child("testData");
 		
 		FirebaseTest firebaseTest = new FirebaseTest(testDataRef);
 		// all test scenario
-//		int n = 1;
-//		firebaseTest.testInputWithPush(n);
+		int n = 1;
+		firebaseTest.testInputWithPush(n);
 //		firebaseTest.testInputWithSet(10);
 //		firebaseTest.testReadSingleKey("0");
 //		firebaseTest.testReadRangedKey("0","-KX0KIc3CHKJuLyVdfTn");
 //		firebaseTest.testUpdateSingleKey("0");
-		firebaseTest.testUpdateRangedKey(5, 7);
+//		firebaseTest.testUpdateRangedKey(5, 7);
 //		firebaseTest.testDeleteSingleKey("0");
 //		firebaseTest.testDeleteRangedKey("0", "2");
 		

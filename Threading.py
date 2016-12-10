@@ -13,7 +13,7 @@ class myThread (threading.Thread):
         self.counter = counter
     def run(self):
         #print ("Starting " + self.name)
-        r = requests.post('http://localhost:13061/read_firebase', json={"start":"0","end":"999"})
+        r = requests.post('http://localhost:13061/insert_rethink', json={"type":"push","n":"1"})
         data = r.json() 
         print(str(data['execCount']) + " : " + str(data['execTime']) + "\n")
         #print_time(self.name, self.counter, 1)
@@ -28,7 +28,7 @@ def print_time(threadName, delay, counter):
         counter -= 1
 
 # Create new threads
-for m in range(0,1000):
+for m in range(0,100):
     print(m)
     thread = myThread(1, "Thread-" + str(m) , m)
     thread.start()

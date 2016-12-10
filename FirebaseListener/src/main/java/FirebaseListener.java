@@ -19,6 +19,7 @@ public class FirebaseListener {
 	private static FirebaseDatabase database;
 	private static DatabaseReference initialReference;
 	private static DatabaseReference testDataRef;
+	private static DatabaseReference offsetReference;
 	
 	public FirebaseListener() throws FileNotFoundException {
 		// Initialize the app with a service account, granting admin privileges
@@ -31,7 +32,9 @@ public class FirebaseListener {
 		// Get a reference to our test data
 		this.database = FirebaseDatabase.getInstance();
 		this.initialReference = database.getReference();	
-		this.testDataRef = initialReference.child("testMartina");
+		this.testDataRef = initialReference.child("testData");
+		this.offsetReference = initialReference.child("info");
+		this.offsetReference = offsetReference.child("serverTimeOffset");
 		
 	}
 	
@@ -42,7 +45,20 @@ public class FirebaseListener {
 		    public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
 		    	String testDataKey = dataSnapshot.getKey();
 		    	TestData addedTestData = dataSnapshot.getValue(TestData.class);
-		        System.out.println(System.currentTimeMillis() + ",Added TestData," + testDataKey + "," + addedTestData.toString());	
+		        
+		    	System.out.println(addedTestData.toString());
+		    	
+		    	long offset = -9906;
+		    	System.out.println("Offset: " + offset);
+		    	
+		    	long estimatedTimeServer = System.currentTimeMillis() + offset;
+		    	System.out.println("Estimated Time Server when Broadcast is Received: " + estimatedTimeServer);
+		    	
+		    	String addedTestDataString[] = addedTestData.toString().split(",");
+		    	long receivedTime = Long.parseLong(addedTestDataString[1]);
+		    	System.out.println("Received Time: " + receivedTime);
+		    	long latency = estimatedTimeServer - receivedTime;
+		    	System.out.println("Added TestData," + addedTestDataString[0] + ",latency," + latency);
 		    }
 
 		    public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {

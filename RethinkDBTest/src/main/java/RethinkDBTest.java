@@ -68,7 +68,7 @@ public class RethinkDBTest {
 		
 		// insert the data into database
 		r.table("testData").insert(mo).run(conn);
-				
+		
 		long endTime = System.currentTimeMillis();
 		System.out.println("End Time: " + endTime);
 		
@@ -168,18 +168,38 @@ public class RethinkDBTest {
 		System.out.println("Test RethinkDB Update Ranged Key");
 		System.out.println("Update data: " + key1 + " - " + key2);
 		
-		ArrayList<TestData> testDataList = TestDataGenerator.generateUpdateData(key1,key2);
+		
+		
+//		ArrayList<TestData> testDataList = TestDataGenerator.generateData(n);
+		
+		// initialize the data
+		int length = key2 - key1 + 1;
+		MapObject[] mo = new MapObject[length];
+		
+		for(int ii = key1, n = 0; ii <= key2; ii++, n++) {
+			mo[ii] = r.hashMap("id",ii)
+			.with("testName", "testData" + ii + "Updated")
+			.with("testTime", r.now().toEpochTime());
+		}
 		
 		long startTime = System.currentTimeMillis();
 		System.out.println("Start Time: " + startTime);
 		
-		// update the data one by one
-		for(int ii = key1,n = 0; ii <= key2; ii++, n++){
-			r.table("testData").get(ii).update(
-					r.hashMap("testName",testDataList.get(n).testName)
-						.with("testTime",r.now().toEpochTime()))
-			.run(conn);
-		}
+		r.table("testData").update(mo);
+		
+		// kodingan yang bener yang di bawah
+//		ArrayList<TestData> testDataList = TestDataGenerator.generateUpdateData(key1,key2);
+//		
+//		long startTime = System.currentTimeMillis();
+//		System.out.println("Start Time: " + startTime);
+//		
+//		// update the data one by one
+//		for(int ii = key1,n = 0; ii <= key2; ii++, n++){
+//			r.table("testData").get(ii).update(
+//					r.hashMap("testName",testDataList.get(n).testName)
+//						.with("testTime",r.now().toEpochTime()))
+//			.run(conn);
+//		}
 		
 		long endTime = System.currentTimeMillis();
 		System.out.println("End Time: " + endTime);
@@ -215,7 +235,7 @@ public class RethinkDBTest {
 		System.out.println("===============================");
 		
 		// close the connection
-		conn.close();
+//		conn.close();
 	}
 	
 	public void testDeleteRangedKey(int key1, int key2){
@@ -239,7 +259,7 @@ public class RethinkDBTest {
 		System.out.println("===============================");
 		
 		// close the connection
-		conn.close();
+//		conn.close();
 	}
 	
 }
